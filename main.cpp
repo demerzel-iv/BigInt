@@ -7,15 +7,11 @@ using std::endl;
 
 int main()
 {
-    poly A = {1,2,3};
-    poly B = {1,4,3};
+    Bint x ("-1239283452197432"), y ("-9081239218397914");
 
-    cout<<(A^2)<<endl;
-    cout<<A*B<<endl;
-
-    Bint x (123);
-
-    cout<<x.size()<<endl;
+    cout<<x<<" + "<<y<<" = "<<x+y<<endl;
+    cout<<x<<" - "<<y<<" = "<<x-y<<endl;
+    cout<<x<<" * "<<y<<" = "<<x*y<<endl;
 
     return 0;
 }
