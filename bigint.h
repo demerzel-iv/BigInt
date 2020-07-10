@@ -1,15 +1,24 @@
 #pragma once
 #include <iostream>
+#include <string>
+#include <vector>
+
+using std :: string;
+using std :: vector;
+
+const bool positive = 1;
+const bool negative = 0;
 
 class Bint
 {
     unsigned int siz;
-    int sign;
-    int *s;
+    bool sign;
+    vector<int> s;
 
 public:
-    Bint(int x=0);
+    Bint(int x = 0);
     Bint(long long  x);
+    Bint(string x);
 
     unsigned int size() const;
     int operator [] (int i) const;
