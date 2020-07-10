@@ -1,7 +1,14 @@
-CompOpt = g++ -O2 -std=c++11
-objects = bigint.o
+CompOpt = g++ -O2 -std=c++11 
+ObjCompOpt = g++ -O2 -std=c++11 -c
+LibOpt = -L. -lpoly -static
 
-main: $(objects) main.cpp 
-	$(CompOpt) $(objects) main.cpp -o main
+objects = bigint.o 
 
-bigint.o: bigint.h 
+main: libpoly.a $(objects) main.cpp 
+	$(CompOpt) $(objects) main.cpp -o main $(LibOpt)
+
+bigint.o: bigint.cpp bigint.h 
+	$(CompOpt) $< -o $@ -c $(LibOpt)
+
+clean:
+	rm *.o

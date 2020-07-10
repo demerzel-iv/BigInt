@@ -1,4 +1,5 @@
 #include "bigint.h"
+#include "poly/polynomial.h"
 
 unsigned int Bint :: size() const
 {
