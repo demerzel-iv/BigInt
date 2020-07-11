@@ -12,7 +12,6 @@ const int negative = -1;
 
 class Bint
 {
-    unsigned int siz = 0;
     int sign;
     vector<int> s;
 
@@ -39,18 +38,20 @@ public:
     Bint operator - (void) const ;
 
     friend void format (Bint &A);
+    
+    friend bool operator == (const Bint &A, const Bint &B);
+    friend bool operator != (const Bint &A, const Bint &B);
+    friend bool operator < (const Bint &A, const Bint &B);
+    friend bool operator > (const Bint &A, const Bint &B);
+    friend bool operator <= (const Bint &A, const Bint &B);
+    friend bool operator >= (const Bint &A, const Bint &B);
+    friend Bint operator + (const Bint &A,const Bint &B);
+    friend Bint operator - (const Bint &A,const Bint &B);
+    friend Bint operator * (const Bint &A,const Bint &B);
+    friend Bint operator / (const Bint &A,const Bint &B);
+    friend Bint operator % (const Bint &A,const Bint &B);
 
-friend bool operator == (const Bint &A, const Bint &B);
-friend bool operator != (const Bint &A, const Bint &B);
-friend bool operator < (const Bint &A, const Bint &B);
-friend bool operator > (const Bint &A, const Bint &B);
-friend bool operator <= (const Bint &A, const Bint &B);
-friend bool operator >= (const Bint &A, const Bint &B);
-friend Bint operator + (const Bint &A,const Bint &B);
-friend Bint operator - (const Bint &A,const Bint &B);
-friend Bint operator * (const Bint &A,const Bint &B);
-friend Bint operator / (const Bint &A,const Bint &B);
-friend Bint operator % (const Bint &A,const Bint &B);
+    friend ostream& operator << (ostream &os,const Bint &A);
 
-friend ostream& operator << (ostream &os,const Bint &A);
+    friend Bint abs(const Bint &A);
 };

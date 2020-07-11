@@ -43,17 +43,14 @@ Bint :: Bint(int x)
     int tem;
     if (sign > 0) tem = x;
     else tem = -x;
-    siz = 0;
     if (tem == 0) 
     {
         s.push_back(0);
-        siz = 1;
     }
     while (tem != 0)
     {
         s.push_back((int)(tem%10));
         tem /= 10;
-        ++siz;
     }
 }
 
@@ -64,12 +61,10 @@ Bint :: Bint(long long x)
     long long tem;
     if (sign > 0) tem = x;
     else tem = -x;
-    siz = 0;
     while (tem != 0)
     {
         s.push_back((int)(tem%10));
         tem /= 10;
-        ++siz;
     }
 }
 Bint :: Bint(string x)
@@ -100,21 +95,18 @@ Bint :: Bint(string x)
 Bint :: Bint(const Bint &x)
 {
     sign = x.sign;
-    siz = x.siz;
     s.assign(x.s.begin(), x.s.end());
 }
 
 Bint :: Bint(Bint &&x)
 {
     sign = x.sign;
-    siz = x.siz;
     s = std::move(x.s); 
 }
 
 Bint& Bint :: operator = (const Bint &A)
 {
     sign = A.sign;
-    siz = A.siz;
     s.assign(A.s.begin(), A.s.end());
     return *this;
 }
@@ -122,14 +114,13 @@ Bint& Bint :: operator = (const Bint &A)
 Bint& Bint :: operator = (Bint &&A)
 {
     sign = A.sign;
-    siz = A.siz;
     s = std::move(A.s);
     return *this;
 }
 
 void Bint::resize(int _siz)
 {
-   s.resize(siz = _siz);
+   s.resize(_siz);
 }
 void Bint::fix(int i)
 {
@@ -139,7 +130,7 @@ void Bint::fix(int i)
 }
 int& Bint::highest()
 {
-    return s[siz-1];
+    return s[size()-1];
 }
 
 int Bint :: operator [] (int i) const
@@ -242,6 +233,54 @@ Bint operator * (const Bint &A,const Bint &B)
     format(ret);
     return ret;
 }
+Bint operator / (const Bint &A,const Bint &B)
+{
+    if(abs(A)<abs(B)) return Bint(0);
+
+    std::ostringstream oss;
+    Bint a=A,tmp,ret;
+
+    for(int i=A.size()-1;i>=B.size()-1;i--)
+    {
+        //printf("i = %d\n",i);
+        //cout<<"a = "<<a<<endl;
+
+        oss.clear();
+        oss.str("");
+
+        //printf(" %d : %d\n",A.size()-1,i-B.size());
+        for(int j=A.size()-1;
+            //printf("%d === %d : %d\n",j,i-B.size(),(j>i-(int)B.size())),
+            (j>i-(int)B.size());
+                j--) 
+        {
+            //printf("j = %d\n",j),
+            oss<<a[j];
+        }
+        tmp=Bint(oss.str());
+
+        //cout<<"wtf : "<<oss.str()<<endl;
+        //cout<<"tmp = "<<tmp<<endl;
+
+        ret.s.push_back(0);
+        while(tmp>=B)
+        {
+            tmp = tmp-B ,ret.s.back()++;
+            //cout<<"tmp = "<<tmp<<", B = "<<B<<endl;
+            //getchar();
+        }
+
+        for(int j=A.size()-1;j>i-B.size();j--)
+            if(j<=i) a[j]=tmp[j-i+B.size()-1];
+            else a[j]=0;
+    }
+
+    std::reverse(ret.s.begin(),ret.s.end());
+    ret.sign=A.sign*B.sign;
+
+    format(ret);
+    return ret;
+}
 ostream& operator << (ostream &os, const Bint &A)
 {
     if(A.sign==negative) os<<"-";
@@ -252,10 +291,18 @@ ostream& operator << (ostream &os, const Bint &A)
     return os;
 }
 
-void Bint::output()
+void Bint::output() //for debug
 {
     cout<<"sign : "<<sign << " , ";
-    for(int i=0;i<siz;i++)
+    for(int i=0;i<size();i++)
         cout<<s[i]<<" ";
     cout<<endl;
+}
+
+Bint abs(const Bint &A)
+{
+    Bint ret(A);
+    if(ret.sign==negative)
+        ret.sign=positive;
+    return ret;
 }

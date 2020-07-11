@@ -7,8 +7,16 @@ using std::endl;
 
 int main()
 {
-    Bint x("-00000123456");
-    cout << x << endl;
-//  cout << modpow_B(x, y, z);
+    Bint x ("-341223432432431413243"), y ("2123423");
+
+    cout<<x<<endl;
+
+    cout<<x/y<<endl;
+
+    //cout<<x<<" + "<<y<<" = "<<x+y<<endl;
+    //cout<<x<<" - "<<y<<" = "<<x-y<<endl;
+    //cout<<x<<" * "<<y<<" = "<<x*y<<endl;
+
+
     return 0;
 }
