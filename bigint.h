@@ -12,7 +12,7 @@ const int negative = -1;
 
 class Bint
 {
-    unsigned int siz;
+    unsigned int siz = 0;
     int sign;
     vector<int> s;
 
@@ -31,7 +31,7 @@ public:
     Bint& operator = (const Bint &A);
     Bint& operator = (Bint &&A);
 
-    unsigned int size() const;
+    int size() const;
     int getsign() const;
     int operator [] (int i) const;
     int& operator [] (int i);

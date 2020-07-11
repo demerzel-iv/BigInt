@@ -27,9 +27,9 @@ void format(Bint &A)
     }
 }
 
-unsigned int Bint :: size() const
+int Bint :: size() const
 {
-    return siz;
+    return s.size();
 }
 
 int Bint::getsign() const
@@ -44,6 +44,11 @@ Bint :: Bint(int x)
     if (sign > 0) tem = x;
     else tem = -x;
     siz = 0;
+    if (tem == 0) 
+    {
+        s.push_back(0);
+        siz = 1;
+    }
     while (tem != 0)
     {
         s.push_back((int)(tem%10));
@@ -69,18 +74,24 @@ Bint :: Bint(long long x)
 }
 Bint :: Bint(string x)
 {
-    int tem = x.size();
-    if (x[0] == '-')
+    int tem1 = x.size();
+    int tem2 = tem1;
+    sign = 1;
+    for (int i = 0; i < tem1; ++i)
     {
-        sign = negative;
-        siz = tem - 1;
+        if (i == 0 && x[0] == '-')
+        {
+            sign = -1;
+            --tem2;
+        }
+        else if (x[i] == '0') --tem2;
+        else break;
     }
-    else 
+    if (tem2 == 0) 
     {
-        sign = positive;
-        siz = tem;
+        s.push_back(0);
     }
-    for (int i = tem - 1; i >= (int)(tem - siz); --i)
+    for (int i = tem1 - 1; i >= (tem1 - tem2); --i)
     {
         s.push_back((x[i] - '0'));
     }
