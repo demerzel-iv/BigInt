@@ -281,6 +281,10 @@ Bint operator / (const Bint &A,const Bint &B)
     format(ret);
     return ret;
 }
+Bint operator%(const Bint &A, const Bint &B)
+{
+    return A-(A/B)*B;
+}
 ostream& operator << (ostream &os, const Bint &A)
 {
     if(A.sign==negative) os<<"-";
