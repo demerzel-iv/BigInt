@@ -97,7 +97,7 @@ Bint :: Bint(Bint &&x)
 {
     sign = x.sign;
     siz = x.siz;
-    s = x.s;    
+    s = std::move(x.s); 
 }
 
 Bint& Bint :: operator = (const Bint &A)
@@ -112,7 +112,7 @@ Bint& Bint :: operator = (Bint &&A)
 {
     sign = A.sign;
     siz = A.siz;
-    s = A.s;
+    s = std::move(A.s);
     return *this;
 }
 
