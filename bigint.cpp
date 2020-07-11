@@ -1,16 +1,41 @@
 #include "bigint.h"
 #include "poly/polynomial.h"
 
+void format(Bint &A)
+{
+    for(int i=0;i<A.size()-1;i++) A.fix(i);
+
+    while(A.highest() == 0 && A.size()>1)
+        A.resize(A.size()-1);
+
+    if(A.highest() < 0) 
+    {
+        A.sign *= -1;
+        for(int i=0;i<A.size();i++)
+            A[i]*=-1;
+        format(A);
+    }
+    else 
+    {
+        int ind = A.size();
+        while(A.highest() >= 10)
+        {
+            A.resize(ind+1);
+            A.fix(ind-1);
+            ind++;
+        }
+    }
+}
+
 unsigned int Bint :: size() const
 {
     return siz;
 }
 
-int Bint :: echo_sign() const
+int Bint::getsign() const
 {
     return sign;
 }
-
 Bint :: Bint(int x)
 {
     if (x >= 0) sign = positive;
@@ -61,26 +86,33 @@ Bint :: Bint(string x)
     }
 }
 
-int Bint :: operator [] (int i) const
+void Bint::resize(int _siz)
 {
-    return s[i];
+   s.resize(siz = _siz);
+}
+void Bint::fix(int i)
+{
+    int a = std::floor(s[i]/10.0);
+    s[i+1]+=a;
+    s[i]-=a*10;
+}
+int& Bint::highest()
+{
+    return s[siz-1];
 }
 
+int Bint :: operator [] (int i) const
+{
+    return i<size()?s[i]:0;
+}
 int& Bint :: operator [] (int i)
 {
     return s[i];
 }
 
-Bint Bint :: operator - (void)
-{
-    Bint tem = *this;
-    tem.sign = -tem.sign;
-    return tem;
-}
-
 bool operator == (const Bint &A, const Bint &B)
 {
-    if (A.echo_sign() != B.echo_sign()) return 0;
+    if (A.getsign() != B.getsign()) return 0;
     if (A.size() != B.size()) return 0;
     for (int i = 0; i < A.size(); ++i)
     {
@@ -97,8 +129,8 @@ bool operator != (const Bint &A, const Bint &B)
 
 bool operator < (const Bint &A, const Bint &B)
 {
-    if (A.echo_sign() > B.echo_sign()) return 0;
-    else if (A.echo_sign() < B.echo_sign()) return 1;
+    if (A.getsign() > B.getsign()) return 0;
+    else if (A.getsign() < B.getsign()) return 1;
     else 
     {
         bool tem;
@@ -112,7 +144,7 @@ bool operator < (const Bint &A, const Bint &B)
                 else if (A[i] < B[i]) {tem = 1;break;}
             }
         }
-        if (A.echo_sign() >0) return tem;
+        if (A.getsign() >0) return tem;
         else return !tem;
     }
 }
@@ -133,4 +165,56 @@ bool operator >= (const Bint &A, const Bint &B)
 {
     if (A < B) return 0;
     else return 1;
+}
+Bint Bint::operator - (void) const
+{
+    Bint ret = *this;
+    ret.sign *= -1;
+    return ret;
+}
+Bint operator + (const Bint &A,const Bint &B)
+{
+    Bint ret;
+    ret.resize(std::max(A.size(),B.size()));
+    for(int i=0;i<ret.size();i++)
+        ret[i]=A.sign*A[i]+B.sign*B[i];
+
+    format(ret);
+    return ret;
+}
+Bint operator - (const Bint &A,const Bint &B)
+{
+    return A+(-B);
+}
+Bint operator * (const Bint &A,const Bint &B)
+{
+    poly pA (A.s.begin(),A.s.end());
+    poly pB (B.s.begin(),B.s.end());
+
+    poly C = pA * pB;
+
+    Bint ret;
+    ret.resize(C.size());
+    for(int i=0;i<ret.size();i++)
+        ret[i]=C[i].getvalue()->getValueInt();
+    ret.sign = A.sign * B.sign;
+    format(ret);
+    return ret;
+}
+ostream& operator << (ostream &os, const Bint &A)
+{
+    if(A.sign==negative) os<<"-";
+    
+    for(int i=A.size()-1;i>=0;i--)
+        os<<A[i];
+
+    return os;
+}
+
+void Bint::output()
+{
+    cout<<"sign : "<<sign << " , ";
+    for(int i=0;i<siz;i++)
+        cout<<s[i]<<" ";
+    cout<<endl;
 }
