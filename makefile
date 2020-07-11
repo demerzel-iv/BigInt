@@ -1,6 +1,6 @@
 CompOpt = g++ -O2 -std=c++11 
 ObjCompOpt = g++ -O2 -std=c++11 -c
-LibOpt = -L. -lpoly -static
+LibOpt = -L. -lpoly 
 
 objects = bigint.o 
 
