@@ -26,6 +26,11 @@ public:
     Bint(long long  x);
     Bint(string x);
 
+    Bint(const Bint &x);
+    Bint(Bint &&x);
+    Bint& operator = (const Bint &A);
+    Bint& operator = (Bint &&A);
+
     unsigned int size() const;
     int getsign() const;
     int operator [] (int i) const;

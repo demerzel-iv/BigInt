@@ -86,6 +86,36 @@ Bint :: Bint(string x)
     }
 }
 
+Bint :: Bint(const Bint &x)
+{
+    sign = x.sign;
+    siz = x.siz;
+    s.assign(x.s.begin(), x.s.end());
+}
+
+Bint :: Bint(Bint &&x)
+{
+    sign = x.sign;
+    siz = x.siz;
+    s = x.s;    
+}
+
+Bint& Bint :: operator = (const Bint &A)
+{
+    sign = A.sign;
+    siz = A.siz;
+    s.assign(A.s.begin(), A.s.end());
+    return *this;
+}
+
+Bint& Bint :: operator = (Bint &&A)
+{
+    sign = A.sign;
+    siz = A.siz;
+    s = A.s;
+    return *this;
+}
+
 void Bint::resize(int _siz)
 {
    s.resize(siz = _siz);
