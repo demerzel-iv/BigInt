@@ -285,6 +285,13 @@ Bint operator%(const Bint &A, const Bint &B)
 {
     return A-(A/B)*B;
 }
+
+Bint Bint :: operator += (const Bint &A)
+{
+    *this = *this + A;
+    return *this;
+}
+
 ostream& operator << (ostream &os, const Bint &A)
 {
     if(A.sign==negative) os<<"-";
@@ -295,7 +302,40 @@ ostream& operator << (ostream &os, const Bint &A)
     return os;
 }
 
-void Bint::output() //for debug
+vector<bool> B_to_bin(Bint A)
+{
+    vector<bool> ans;
+    while (A != 0)
+    {
+        if (A % 2 != 0) ans.push_back(1);
+        else ans.push_back(0);
+        A = A / 2;
+    }
+    return ans; 
+}
+
+Bint modpow_B(Bint A,Bint B, Bint C)
+{
+    Bint ans(1);
+    vector<bool> tem1 = B_to_bin(B);
+    Bint tem2(A);
+    if (tem1[0]) ans = ans * A;
+    cout << ans << endl;
+    for (int i = 1; i < tem1.size(); ++i)
+    {
+        tem2 = tem2 * tem2;
+        tem2 = tem2 % C;
+        if (tem1[i])
+        {
+            ans = ans * tem2;
+            ans = ans % C;
+        }
+        cout << ans << endl;
+    }
+    return ans;
+}
+
+void Bint::output()
 {
     cout<<"sign : "<<sign << " , ";
     for(int i=0;i<size();i++)
