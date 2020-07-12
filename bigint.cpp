@@ -271,7 +271,7 @@ Bint operator / (const Bint &A,const Bint &B)
         }
 
         for(int j=A.size()-1;j>i-B.size();j--)
-            if(j<=i) a[j]=tmp[j-i+B.size()-1];
+            if(j-i+B.size()-1<tmp.size()) a[j]=tmp[j-i+B.size()-1];
             else a[j]=0;
     }
 
