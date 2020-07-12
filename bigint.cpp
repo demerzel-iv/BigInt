@@ -320,7 +320,6 @@ Bint modpow_B(Bint A,Bint B, Bint C)
     vector<bool> tem1 = B_to_bin(B);
     Bint tem2(A);
     if (tem1[0]) ans = ans * A;
-    cout << ans << endl;
     for (int i = 1; i < tem1.size(); ++i)
     {
         tem2 = tem2 * tem2;
@@ -330,7 +329,6 @@ Bint modpow_B(Bint A,Bint B, Bint C)
             ans = ans * tem2;
             ans = ans % C;
         }
-        cout << ans << endl;
     }
     return ans;
 }

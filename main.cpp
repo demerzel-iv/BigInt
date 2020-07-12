@@ -7,12 +7,8 @@ using std::endl;
 
 int main()
 {
-    Bint x ("432423"), y ("3"), z("578979");
+    Bint x ("43243123123"), y ("3432434"), z("57893213123213");
     Bint a ("119855980179");
-    vector<bool> tem = B_to_bin(y);
-    cout << a / z << endl;
-    //cout << a % z << endl;
-
-    //cout<< (a/z)*z + (a%z) <<endl;
+    cout << modpow_B(x, y, z) << endl;
     return 0;
 }
