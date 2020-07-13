@@ -286,9 +286,29 @@ Bint operator%(const Bint &A, const Bint &B)
     return A-(A/B)*B;
 }
 
-Bint Bint :: operator += (const Bint &A)
+Bint& Bint :: operator += (const Bint &A)
 {
     *this = *this + A;
+    return *this;
+}
+Bint& Bint::operator-=(const Bint &A)
+{
+    *this = *this - A;
+    return *this;
+}
+Bint& Bint::operator *= (const Bint &A)
+{
+    *this = *this * A;
+    return *this;
+}
+Bint& Bint::operator /= (const Bint &A)
+{
+    *this = *this / A;
+    return *this;
+}
+Bint& Bint::operator %= (const Bint &A)
+{
+    *this = *this % A;
     return *this;
 }
 
@@ -347,4 +367,12 @@ Bint abs(const Bint &A)
     if(ret.sign==negative)
         ret.sign=positive;
     return ret;
+}
+
+int operator % (const Bint &A,int x)
+{
+    int ret = 0 ;
+    for(int i=0;i<A.size();i++)
+        ret = (ret*10+A[i]) % x;
+    return ret * A.sign;
 }
