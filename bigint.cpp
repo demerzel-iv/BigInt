@@ -373,7 +373,7 @@ Bint abs(const Bint &A)
 int operator % (const Bint &A,int x)
 {
     int ret = 0 ;
-    for(int i=0;i<A.size();i++)
+    for(int i=A.size()-1;i>=0;i--)
         ret = (ret*10+A[i]) % x;
     return ret * A.sign;
 }
