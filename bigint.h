@@ -34,10 +34,15 @@ public:
     int operator [] (int i) const;
     int& operator [] (int i);
     friend void format (Bint &A);
-    Bint operator += (const Bint &A);
     Bint operator - (void) const ;
     Bint& operator = (const Bint &A);
     Bint& operator = (Bint &&A);
+
+    Bint& operator += (const Bint &A);
+    Bint& operator -= (const Bint &A);
+    Bint& operator *= (const Bint &A);
+    Bint& operator /= (const Bint &A);
+    Bint& operator %= (const Bint &A);
 
     friend bool operator == (const Bint &A, const Bint &B);
     friend bool operator != (const Bint &A, const Bint &B);
@@ -50,6 +55,8 @@ public:
     friend Bint operator * (const Bint &A,const Bint &B);
     friend Bint operator / (const Bint &A,const Bint &B);
     friend Bint operator % (const Bint &A,const Bint &B);
+
+    friend int operator % (const Bint &A,int x);
 
     friend Bint abs(const Bint &A);
     friend ostream& operator << (ostream &os,const Bint &A);
