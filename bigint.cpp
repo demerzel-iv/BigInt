@@ -85,6 +85,7 @@ Bint :: Bint(string x)
     if (tem2 == 0) 
     {
         s.push_back(0);
+        sign = 1;
     }
     for (int i = tem1 - 1; i >= (tem1 - tem2); --i)
     {
