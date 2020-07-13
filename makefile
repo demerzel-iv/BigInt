@@ -15,6 +15,9 @@ ifeq ($(shell uname), Darwin)
 endif
 endif
 
+staticlib: $(objects)
+	ar -crv libBigInt.a $(objects)
+
 libpoly.a:
 	make -C ./poly staticlib
 	mv ./poly/libpoly.a ./
