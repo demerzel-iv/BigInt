@@ -14,6 +14,7 @@ int main()
         cout << q[i];
     }
     cout << endl;
+    cout << bin_to_B(q) << endl;
     cout << pow_B(x, y) << endl;
     cout << modpow_B(z, y, x) << endl;
     return 0;

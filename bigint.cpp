@@ -369,6 +369,19 @@ Bint pow_B(Bint A, Bint B)
     return ans;
 }
 
+Bint bin_to_B(const vector<bool> &A)
+{
+    Bint ans(0);
+    Bint tem(1);
+    if (A[0]) ans += 1;
+    for (int i = 1; i < A.size(); ++i)
+    {
+        tem *= 2;
+        if (A[i]) ans += tem;
+    }
+    return ans;
+}
+
 Bint modpow_B(Bint A,Bint B, Bint C)
 {
     Bint ans(1);

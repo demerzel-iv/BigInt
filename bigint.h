@@ -61,6 +61,7 @@ public:
     friend ostream& operator << (ostream &os,const Bint &A);
     
     friend vector<bool> B_to_bin(Bint A);
+    friend Bint bin_to_B(const vector<bool> &A);
     friend Bint pow_B(Bint A, Bint B);
     friend Bint modpow_B(Bint A, Bint B, Bint C); //a^b (mod c)
 };
