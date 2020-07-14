@@ -7,9 +7,14 @@ using std::endl;
 
 int main()
 {
-    Bint x(32);
-
-    cout<<x%2<<endl;
-
+    Bint x(987), y(21), z(2);
+    vector<bool> q = B_to_bin(x);
+    for (int i = 0; i <q.size(); ++i)
+    {
+        cout << q[i];
+    }
+    cout << endl;
+    cout << pow_B(x, y) << endl;
+    cout << modpow_B(z, y, x) << endl;
     return 0;
 }

@@ -166,19 +166,34 @@ bool operator < (const Bint &A, const Bint &B)
     else if (A.getsign() < B.getsign()) return 1;
     else 
     {
-        bool tem;
-        if (A.size() > B.size()) tem = 0;
-        else if (A.size() < B.size()) tem = 1;
-        else 
+        if (A.getsign() == 1)
         {
-            for (int i = A.size() - 1; i >= 0; --i)
+            if (A.size() > B.size()) return 0;
+            else if (A.size() < B.size()) return 1;
+            else 
             {
-                if (A[i] > B[i]) {tem = 0; break;}
-                else if (A[i] < B[i]) {tem = 1;break;}
+                for (int i =0; i <A.size(); ++i)
+                {
+                    if (A[i] > B[i]) {return 0; break;}
+                    else if (A[i] < B[i]) {return 1; break;}
+                }
+                return 0;
             }
         }
-        if (A.getsign() >0) return tem;
-        else return !tem;
+        else 
+        {
+            if (A.size() > B.size()) return 1;
+            else if (A.size() < B.size()) return 0;
+            else 
+            {
+                for (int i =0; i <A.size(); ++i)
+                {
+                    if (A[i] > B[i]) {return 1; break;}
+                    else if (A[i] < B[i]) {return 0; break;}
+                }
+                return 0;
+            }
+        }
     }
 }
 
@@ -328,11 +343,30 @@ vector<bool> B_to_bin(Bint A)
     vector<bool> ans;
     while (A != 0)
     {
-        if (A % 2 != 0) ans.push_back(1);
-        else ans.push_back(0);
-        A = A / 2;
+        if (A % 2 != 0) {ans.push_back(1);}
+        else {ans.push_back(0);}
+        A /= 2;
     }
     return ans; 
+}
+
+Bint pow_B(Bint A, Bint B)
+{
+    Bint ans(1);
+    vector<bool> tem1 = B_to_bin(B);
+    /*for (int i = 0; i < tem1.size(); ++i)
+    {
+        cout << tem1[i];
+    }
+    cout << endl;*/
+    Bint tem2(A);
+    if (tem1[0]) ans *= A;
+    for (int i = 1; i < tem1.size(); ++i)
+    {
+        tem2 *= tem2;
+        if (tem1[i]) ans *= tem2;
+    }
+    return ans;
 }
 
 Bint modpow_B(Bint A,Bint B, Bint C)
@@ -340,15 +374,15 @@ Bint modpow_B(Bint A,Bint B, Bint C)
     Bint ans(1);
     vector<bool> tem1 = B_to_bin(B);
     Bint tem2(A);
-    if (tem1[0]) ans = ans * A;
+    if (tem1[0]) ans *= A;
     for (int i = 1; i < tem1.size(); ++i)
     {
-        tem2 = tem2 * tem2;
-        tem2 = tem2 % C;
+        tem2 *= tem2;
+        tem2 %= C;
         if (tem1[i])
         {
-            ans = ans * tem2;
-            ans = ans % C;
+            ans *= tem2;
+            ans %= C;
         }
     }
     return ans;

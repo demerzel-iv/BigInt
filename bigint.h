@@ -6,7 +6,6 @@
 using std :: string;
 using std :: vector;
 using std :: ostream;
-using std :: move;
 
 const int positive = 1;
 const int negative = -1;
@@ -62,7 +61,6 @@ public:
     friend ostream& operator << (ostream &os,const Bint &A);
     
     friend vector<bool> B_to_bin(Bint A);
-    
+    friend Bint pow_B(Bint A, Bint B);
+    friend Bint modpow_B(Bint A, Bint B, Bint C); //a^b (mod c)
 };
-
-Bint modpow_B(Bint A, Bint B, Bint C); //a^b (mod c)
