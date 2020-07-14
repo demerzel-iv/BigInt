@@ -65,3 +65,5 @@ public:
     friend Bint pow_B(Bint A, Bint B);
     friend Bint modpow_B(Bint A, Bint B, Bint C); //a^b (mod c)
 };
+
+Bint bin_to_B(const vector<bool> &A);
