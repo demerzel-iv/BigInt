@@ -172,7 +172,7 @@ bool operator < (const Bint &A, const Bint &B)
             else if (A.size() < B.size()) return 1;
             else 
             {
-                for (int i =0; i <A.size(); ++i)
+                for (int i = A.size() - 1; i >= 0; --i)
                 {
                     if (A[i] > B[i]) {return 0; break;}
                     else if (A[i] < B[i]) {return 1; break;}
@@ -186,7 +186,7 @@ bool operator < (const Bint &A, const Bint &B)
             else if (A.size() < B.size()) return 0;
             else 
             {
-                for (int i =0; i <A.size(); ++i)
+                for (int i = A.size() - 1; i >= 0; --i)
                 {
                     if (A[i] > B[i]) {return 1; break;}
                     else if (A[i] < B[i]) {return 0; break;}
@@ -392,11 +392,13 @@ Bint modpow_B(Bint A,Bint B, Bint C)
     {
         tem2 *= tem2;
         tem2 %= C;
+        cout << tem2 << endl;
         if (tem1[i])
         {
             ans *= tem2;
             ans %= C;
         }
+        cout << ans << endl;
     }
     return ans;
 }
