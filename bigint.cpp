@@ -392,13 +392,11 @@ Bint modpow_B(Bint A,Bint B, Bint C)
     {
         tem2 *= tem2;
         tem2 %= C;
-        cout << tem2 << endl;
         if (tem1[i])
         {
             ans *= tem2;
             ans %= C;
         }
-        cout << ans << endl;
     }
     return ans;
 }
