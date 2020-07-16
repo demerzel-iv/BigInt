@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 const int M = (int)1e7;
 
@@ -69,3 +70,4 @@ public:
 };
 
 Bint bin_to_B(const vector<bool> &A);
+int siz_int(int a);

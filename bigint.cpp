@@ -49,8 +49,8 @@ Bint :: Bint(int x)
     }
     while (tem != 0)
     {
-        s.push_back((int)(tem%10));
-        tem /= 10;
+        s.push_back((int)(tem%M));
+        tem /= M;
     }
 }
 
@@ -63,8 +63,8 @@ Bint :: Bint(long long x)
     else tem = -x;
     while (tem != 0)
     {
-        s.push_back((int)(tem%10));
-        tem /= 10;
+        s.push_back((int)(tem%M));
+        tem /= M;
     }
 }
 Bint :: Bint(string x)
@@ -87,9 +87,20 @@ Bint :: Bint(string x)
         s.push_back(0);
         sign = 1;
     }
+    int temr = tem1;
+    int teml = tem1;
+    string tem_str = "";
     for (int i = tem1 - 1; i >= (tem1 - tem2); --i)
     {
-        s.push_back((x[i] - '0'));
+        --teml;
+        tem_str += x[i];
+        if (i == tem1 - tem2 || (temr - teml) == 7) 
+        {
+            reverse(tem_str.begin(), tem_str.end());
+            s.push_back(stoi(tem_str)); 
+            temr = teml;
+            tem_str = "";
+        } 
     }
 }
 
@@ -331,10 +342,15 @@ Bint& Bint::operator %= (const Bint &A)
 ostream& operator << (ostream &os, const Bint &A)
 {
     if(A.sign==negative) os<<"-";
-    
     for(int i=A.size()-1;i>=0;i--)
-        os<<A[i];
-
+    {
+        if (i != A.size() - 1)
+        {
+            for (int j = 0; j < 7 - siz_int(A[i]); ++j)
+                cout << '0';
+        }
+        if (A[i] != 0) cout << A[i];
+    }
     return os;
 }
 
@@ -423,4 +439,15 @@ int operator % (const Bint &A,int x)
     for(int i=A.size()-1;i>=0;i--)
         ret = (ret*10+A[i]) % x;
     return ret * A.sign;
+}
+
+int siz_int(int a)
+{
+    int ans = 0;
+    while(a != 0)
+    {
+        a /= 10;
+        ++ans;   
+    }
+    return ans;
 }
