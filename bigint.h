@@ -58,6 +58,7 @@ public:
     friend Bint operator / (const Bint &A,const Bint &B);
     friend Bint operator % (const Bint &A,const Bint &B);
 
+    friend Bint operator / (const Bint &A,int x);
     friend int operator % (const Bint &A,int x);
 
     friend Bint abs(const Bint &A);

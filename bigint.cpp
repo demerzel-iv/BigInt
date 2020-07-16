@@ -1,6 +1,17 @@
 #include "bigint.h"
-#include "poly/polynomial.h"
+#include <cmath>
+#include <sstream>
+#include <iomanip>
 
+using std::cout;
+using std::endl;
+
+void Bint::fix(int i)
+{
+    int a = std::floor(s[i]*1.0/M);
+    s[i+1]+=a;
+    s[i]-=a*M;
+}
 void format(Bint &A)
 {
     for(int i=0;i<A.size()-1;i++) A.fix(i);
@@ -18,7 +29,7 @@ void format(Bint &A)
     else 
     {
         int ind = A.size();
-        while(A.highest() >= 10)
+        while(A.highest() >= M)
         {
             A.resize(ind+1);
             A.fix(ind-1);
@@ -113,7 +124,8 @@ Bint :: Bint(const Bint &x)
 Bint :: Bint(Bint &&x)
 {
     sign = x.sign;
-    s = std::move(x.s); 
+    //s = std::move(x.s); 
+    s.assign(x.s.begin(), x.s.end());
 }
 
 Bint& Bint :: operator = (const Bint &A)
@@ -126,19 +138,14 @@ Bint& Bint :: operator = (const Bint &A)
 Bint& Bint :: operator = (Bint &&A)
 {
     sign = A.sign;
-    s = std::move(A.s);
+    //s = std::move(A.s);
+    s.assign(A.s.begin(), A.s.end());
     return *this;
 }
 
 void Bint::resize(int _siz)
 {
    s.resize(_siz);
-}
-void Bint::fix(int i)
-{
-    int a = std::floor(s[i]/10.0);
-    s[i+1]+=a;
-    s[i]-=a*10;
 }
 int& Bint::highest()
 {
@@ -247,65 +254,109 @@ Bint operator - (const Bint &A,const Bint &B)
 }
 Bint operator * (const Bint &A,const Bint &B)
 {
-    poly pA (A.s.begin(),A.s.end());
-    poly pB (B.s.begin(),B.s.end());
+    //cout<<A<<" * "<<B<<endl;
+    int nsiz = A.size() + B.size() + 5;
+    long long *s = new long long[nsiz];
 
-    poly C = pA * pB;
+    for(int i=0;i<nsiz;i++)s[i]=0;
+
+    //printf(": nsiz : %d\n",nsiz);
+
+    for(int i=0;i<A.size();i++)
+        for(int j=0;j<B.size();j++)
+            s[i+j] = A[i] * B[j];
+
+    //printf("U\n");
+
+    for(int i=0;i<nsiz-1;i++)
+    {
+        s[i+1]+=s[i]/M;
+        s[i]%=M;
+    }
+    //printf("V\n");
 
     Bint ret;
-    ret.resize(C.size());
-    for(int i=0;i<ret.size();i++)
-        ret[i]=C[i].getvalue()->getValueInt();
+    ret.resize(nsiz);
+    for(int i=0;i<nsiz;i++)
+    {
+        ret[i]=s[i];
+        //printf("ret[%d] = %d\n",i,ret[i]);
+    }
+    //printf("W\n");
     ret.sign = A.sign * B.sign;
+
+    //cout<<"ret = "<<ret.size()<<" | "<<ret<<endl;
+
     format(ret);
+    //printf("WWW\n");
+    //cout<<"ret = "<<ret<<endl;
     return ret;
 }
 Bint operator / (const Bint &A,const Bint &B)
 {
+    //cout<<A<<" / " <<B<<endl;
     if(abs(A)<abs(B)) return Bint(0);
 
     std::ostringstream oss;
-    Bint a=A,tmp,ret;
+    Bint a=A,b=B;
+    int cnt=0;
 
-    for(int i=A.size()-1;i>=B.size()-1;i--)
+    //printf("X\n");
+
+    while(b<=a) 
     {
-        //printf("i = %d\n",i);
-        //cout<<"a = "<<a<<endl;
+        //cout<<"here"<<endl;
+        b=b*10, cnt++;
+        //cout<<"a = "<<a<<", b = "<<b<<endl;
 
-        oss.clear();
-        oss.str("");
-
-        //printf(" %d : %d\n",A.size()-1,i-B.size());
-        for(int j=A.size()-1;
-            //printf("%d === %d : %d\n",j,i-B.size(),(j>i-(int)B.size())),
-            (j>i-(int)B.size());
-                j--) 
-        {
-            //printf("j = %d\n",j),
-            oss<<a[j];
-        }
-        tmp=Bint(oss.str());
-
-        //cout<<"wtf : "<<oss.str()<<endl;
-        //cout<<"tmp = "<<tmp<<endl;
-
-        ret.s.push_back(0);
-        while(tmp>=B)
-        {
-            tmp = tmp-B ,ret.s.back()++;
-            //cout<<"tmp = "<<tmp<<", B = "<<B<<endl;
-            //getchar();
-        }
-
-        for(int j=A.size()-1;j>i-B.size();j--)
-            if(j-i+B.size()-1<tmp.size()) a[j]=tmp[j-i+B.size()-1];
-            else a[j]=0;
+        //getchar();
     }
 
-    std::reverse(ret.s.begin(),ret.s.end());
-    ret.sign=A.sign*B.sign;
+    //printf("A\n");
 
-    format(ret);
+    for(int i=1;i<=cnt;i++)
+    {
+        b=b/10;
+        int res=0;
+        while(a>=b)a-=b,res++;
+        //cout<<"a = "<<a<<endl;
+        //cout<<"b = "<<b<<endl;
+        //getchar();
+        oss<<res;
+    }
+
+    Bint ret(oss.str());
+    ret.sign=A.sign*B.sign;
+    return ret;
+}
+Bint operator / (const Bint &A,int x)
+{
+    //cout<<A<<" /int " <<x<<endl;
+    if(abs(A)<abs(x)) return Bint(0);
+
+    int xsign=1;
+    if(x<0)x*=-1,xsign*=-1;
+
+    std::ostringstream oss;
+    Bint a=A;
+    long long tmp=0;
+
+    //for(int i=A.size()-1;i>=0;i--)
+        //cout<<std::setfill('0')<<std::setw(7)<<A[i]<<" ";
+    //cout<<endl;
+
+    for(int i=A.size()-1;i>=0;i--)
+    {
+        tmp = tmp * M + A[i];
+        oss<<std::setfill('0')<<std::setw(7)<<tmp/x;
+        //cout<<std::setfill('0')<<std::setw(7)<<tmp/x<<" ";
+        tmp%=x;
+    }
+    //cout<<endl;
+
+    Bint ret(oss.str());
+    ret.sign=A.sign*xsign;
+
     return ret;
 }
 Bint operator%(const Bint &A, const Bint &B)
