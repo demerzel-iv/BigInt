@@ -254,74 +254,45 @@ Bint operator - (const Bint &A,const Bint &B)
 }
 Bint operator * (const Bint &A,const Bint &B)
 {
-    //cout<<A<<" * "<<B<<endl;
     int nsiz = A.size() + B.size() + 5;
     long long *s = new long long[nsiz];
 
     for(int i=0;i<nsiz;i++)s[i]=0;
 
-    //printf(": nsiz : %d\n",nsiz);
-
     for(int i=0;i<A.size();i++)
         for(int j=0;j<B.size();j++)
-            s[i+j] = A[i] * B[j];
-
-    //printf("U\n");
+            s[i+j] += (long long)A[i] * B[j];
 
     for(int i=0;i<nsiz-1;i++)
     {
         s[i+1]+=s[i]/M;
         s[i]%=M;
     }
-    //printf("V\n");
 
     Bint ret;
     ret.resize(nsiz);
     for(int i=0;i<nsiz;i++)
-    {
         ret[i]=s[i];
-        //printf("ret[%d] = %d\n",i,ret[i]);
-    }
-    //printf("W\n");
     ret.sign = A.sign * B.sign;
 
-    //cout<<"ret = "<<ret.size()<<" | "<<ret<<endl;
-
     format(ret);
-    //printf("WWW\n");
-    //cout<<"ret = "<<ret<<endl;
     return ret;
 }
 Bint operator / (const Bint &A,const Bint &B)
 {
-    //cout<<A<<" / " <<B<<endl;
     if(abs(A)<abs(B)) return Bint(0);
 
     std::ostringstream oss;
     Bint a=A,b=B;
     int cnt=0;
 
-    //printf("X\n");
-
-    while(b<=a) 
-    {
-        //cout<<"here"<<endl;
-        b=b*10, cnt++;
-        //cout<<"a = "<<a<<", b = "<<b<<endl;
-
-        //getchar();
-    }
-
-    //printf("A\n");
+    while(b<=a) b=b*10, cnt++;
 
     for(int i=1;i<=cnt;i++)
     {
         b=b/10;
         int res=0;
         while(a>=b)a-=b,res++;
-        //cout<<"a = "<<a<<endl;
-        //cout<<"b = "<<b<<endl;
-        //getchar();
         oss<<res;
     }
 
@@ -331,7 +302,6 @@ Bint operator / (const Bint &A,const Bint &B)
 }
 Bint operator / (const Bint &A,int x)
 {
-    //cout<<A<<" /int " <<x<<endl;
     if(abs(A)<abs(x)) return Bint(0);
 
     int xsign=1;
@@ -341,18 +311,12 @@ Bint operator / (const Bint &A,int x)
     Bint a=A;
     long long tmp=0;
 
-    //for(int i=A.size()-1;i>=0;i--)
-        //cout<<std::setfill('0')<<std::setw(7)<<A[i]<<" ";
-    //cout<<endl;
-
     for(int i=A.size()-1;i>=0;i--)
     {
         tmp = tmp * M + A[i];
         oss<<std::setfill('0')<<std::setw(7)<<tmp/x;
-        //cout<<std::setfill('0')<<std::setw(7)<<tmp/x<<" ";
         tmp%=x;
     }
-    //cout<<endl;
 
     Bint ret(oss.str());
     ret.sign=A.sign*xsign;
@@ -421,11 +385,6 @@ Bint pow_B(Bint A, Bint B)
 {
     Bint ans(1);
     vector<bool> tem1 = B_to_bin(B);
-    /*for (int i = 0; i < tem1.size(); ++i)
-    {
-        cout << tem1[i];
-    }
-    cout << endl;*/
     Bint tem2(A);
     if (tem1[0]) ans *= A;
     for (int i = 1; i < tem1.size(); ++i)

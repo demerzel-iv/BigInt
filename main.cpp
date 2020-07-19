@@ -7,13 +7,11 @@ using std::endl;
 
 int main()
 {
-    Bint x("120189730872014711233840359473"), y(4324324);
+    Bint x ("120189730872014711233840359473");
+    Bint p ("100000000000031");
 
-    Bint z = (41251230);
-    cout<<z<<endl;
 
-    cout << x/z<< endl;
-    cout << x/41251230 << endl;
+    cout<<modpow_B(x,p-1,p)<<endl;
 
     //clock_t st_time, ed_time;
     //st_time = clock();
