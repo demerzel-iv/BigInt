@@ -447,7 +447,7 @@ int operator % (const Bint &A,int x)
 {
     int ret = 0 ;
     for(int i=A.size()-1;i>=0;i--)
-        ret = (ret*M+A[i]) % x;
+        ret = ((long long)ret*M+A[i]) % x;
     return ret * A.sign;
 }
 
